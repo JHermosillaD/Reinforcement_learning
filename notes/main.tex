@@ -1,0 +1,221 @@
+\listfiles
+
+
+\documentclass[journal]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{adjustbox}
+\usepackage{nccmath}
+%\usepackage{anysize}
+\usepackage{subfigure}
+\usepackage{amsfonts,latexsym} 
+\usepackage{enumerate}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{threeparttable}
+\usepackage{array,colortbl}
+\usepackage{ifpdf}
+\usepackage{rotating}
+\usepackage{cite}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{blkarray}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}  
+\graphicspath{ {Figs/} }
+
+\newcommand{\MYhead}{\smash{\scriptsize
+\hfil\parbox[t][\height][t]{\textwidth}{\centering
+\begin{picture}(0,0) \put(-5,-10){\includegraphics[width=35mm]{haw.png}}
+\put(-35,-10){\includegraphics[width=8mm]{uv.png}}
+\end{picture} \hspace{8.0cm}
+Class Notes \hspace{5.15cm} Version 1.0\\
+\hspace{7.2cm} MIIA UV - MSC HAW \hspace{5cm} 2022\\
+\underline{\hspace{ \textwidth}}}\hfil\hbox{}}}
+\makeatletter
+\def\ps@headings{%
+\def\@oddhead{\MYhead}%
+\def\@evenhead{\MYhead}}%
+\def\ps@IEEEtitlepagestyle{%
+\def\@oddhead{\MYhead}%
+\def\@evenhead{\MYhead}}%
+\makeatother
+\pagestyle{headings}
+\addtolength{\footskip}{0\baselineskip}
+\addtolength{\textheight}{-1\baselineskip}
+
+\begin{document}
+\title{Reinforcment Learning}
+\author{Jesús Eduardo Hermosilla Díaz}
+\maketitle
+
+\section{Markov Decision Process}	
+
+A \textbf{Markov Process} is a memoryless random process with the Markov property. Formally is a tuple $\left\langle S,P\right\rangle$ where:
+\begin{itemize}
+	\item $S$ is a (finite) set of states
+	\item $P$ is a \textbf{state transition probability} matrix \\
+	 $P_{ss'} = \mathbb{P}[S_{t+1}=s'|S_t=s]$
+\end{itemize}
+
+\textbf{State transition matrix} defines transition probabilities from all
+states $s$ to all successor states $s'$
+\begin{align*}
+\mathbf{P} = 
+\begin{blockarray}{c@{\hspace{1pt}}rrr@{\hspace{3pt}}}
+& s_0' & s_1' & s_2' \\
+\begin{block}{r@{\hspace{1pt}}|@{\hspace{1pt}}
+	|@{\hspace{1pt}}rrr@{\hspace{1pt}}|@{\hspace{1pt}}|}
+s_0 & P_{11} & ... & P_{1n} \\
+s_1 & : &  & : \\
+s_2 & P_{n1} & ... & P_{nn}   \\
+\end{block}
+\end{blockarray}
+\end{align*}
+
+A \textbf{Markov Reward Process} (MRP) is a Markov chain with values. Formally is a tuple $\left\langle S, P, R, \gamma \right\rangle$ where:
+\begin{itemize}
+	\item $S$ is a finite set of states
+	\item $P$ is a state transition probability matrix $P_{ss'}$
+	\item $R$ is a reward function $R_s = \mathbb{E}[R_{t+1}|S_t=s]$
+	\item $\gamma$ is a discount factor $\gamma \in [0,1]$ 
+\end{itemize}
+
+The \textbf{discount factor} determines the present value of future rewards. \\
+
+The \textbf{State value function} of an MRP is the expected return
+starting from state $s$
+\begin{align*}
+V(s) &= \mathbb{E} [G_t|S_t=s] \\
+V(s) &= \mathbb{E} [R_{t+1} + \gamma V(S_{t+1})|S_t = s]
+\end{align*} 
+
+The \textbf{Bellman equation} expresses a relationship between the value of a state and the values of its successor states.
+\begin{align*}
+V(s) = R_s + \gamma \sum_{s'\in S} P_{ss'}V(s')
+\end{align*}
+
+Using matrices:
+\begin{align*}
+V = R + \gamma PV
+\end{align*}
+
+Solved directly:
+\begin{align*}
+V = (I - \gamma P)^{-1}R
+\end{align*}
+
+A \textbf{Markov decision process} (MDP) is a Markov reward process with decisions. It is an environment in which all states are Markov. Formally is a tuple $\left\langle S, A, P, R, \gamma \right\rangle$ where:
+\begin{itemize}
+	\item $S$ is a finite set of states
+	\item $A$ is a finite set of actions
+	\item $P_{ss'}^a$ is a state transition probability matrix
+	\item $R$ is a reward function, $R_s^a = \mathbb{E} [R_{t+1}|S_t=s,A_t=a]$
+	\item $\gamma$ is a discount factor $\gamma \in [0,1]$
+\end{itemize}
+
+A \textbf{Policy} is a mapping from states to probabilities of selecting each possible action i.e, is a distribution over actions given states.
+\begin{align*}
+\pi(a|s) = \mathbb{P} [A_t=a|S_t =s] 
+\end{align*}
+
+The \textbf{state-value function} of an MDP is the expected return starting from state $s$, and then following policy $\pi$.
+\begin{align*}
+V_\pi (s) = \mathbb{E}_\pi [G_t|S_t=s]
+\end{align*}
+
+The \textbf{action-value function} is the expected return starting from state $s$, taking action a, and then following policy $\pi$.
+\begin{align*}
+Q_\pi(s,a) = \mathbb{E}_\pi [G_t |S_t=s,A_t=a]
+\end{align*}
+
+There is always at least one policy that is better than or equal to all other
+policies. This is an \textbf{optimal policy}. All they share the same state-value function, called the \textbf{optimal state-value function}. It specifies the best possible performance in the MDP, which is “solved” when we know it.
+\begin{align*}
+V_*(s) = max_\pi V_\pi(s)
+\end{align*}
+
+Optimal policies also share the same \textbf{optimal action-value function}:
+\begin{align*}
+Q_*(s,a) = max_\pi Q_\pi(s,a)
+\end{align*}
+
+\textbf{Optimal policy from optimal state-value function}: 
+\begin{align*}
+Q_*(s,a) = R_s^a + \gamma\sum_{s'\in S} P_{ss'}^a V_*(s')
+\end{align*}
+
+\textbf{Bellman Optimality equation} 
+\begin{align*}
+V_*(s) &= \mbox{max}_a R_s^a + \gamma\sum_{s'\in S}P_{ss'}^a V_*(s') \\
+Q_*(s,a) &= R_s^a + \gamma\sum_{s'\in S}P_{ss'}^a \mbox{max}_{a'}Q_*(s',a')¨
+\end{align*}
+
+\section{Planning by Dynamic Programming}
+
+Optimal value function
+
+Optimal policy
+
+Bellman expectation equation
+
+Bellman optimality equation
+
+(iterative) policy equation
+
+Bellman expectation backup $v_1 \rightarrow v_2 \rightarrow v_3 ...$
+
+Synchronous backup
+
+Greedy policy with respect to $V_k$
+
+Policy iteration
+
+Diagram
+
+Termination condition for policy evaluation
+
+Value iteration
+
+Prediction
+
+Control
+
+synchronous dynamic programming
+
+asynchronous dynamic programming
+
+in-place value iteration
+
+´prioritized sweeping and Bellman error
+
+real-time dynamic programming
+
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+\begin{thebibliography}{1}
+
+\bibitem{nombre_para_citar}
+David Silver. (2015). Lectures on Reinforcement Learning.
+
+\bibitem{kopka}
+Sutton, R. S., $\&$ Barto, A. G. (2018). Reinforcement learning: An introduction. MIT press.
+	
+\end{thebibliography}
+
+
+\end{document}
+
+
+
+
