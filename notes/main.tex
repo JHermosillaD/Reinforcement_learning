@@ -105,12 +105,12 @@ V(s) = R_s + \gamma \sum_{s'\in S} P_{ss'}V(s')
 
 Using matrices:
 \begin{align*}
-V = R + \gamma PV
+\mathbf{V} = \mathbf{R} + \gamma \mathbf{P}\mathbf{V}
 \end{align*}
 
 Solved directly:
 \begin{align*}
-V = (I - \gamma P)^{-1}R
+\mathbf{V} = (\mathbf{I} - \gamma \mathbf{P})^{-1}\mathbf{R}
 \end{align*}
 
 A \textbf{Markov decision process} (MDP) is a Markov reward process with decisions. It is an environment in which all states are Markov. Formally is a tuple $\left\langle S, A, P, R, \gamma \right\rangle$ where:
@@ -132,9 +132,18 @@ The \textbf{state-value function} of an MDP is the expected return starting from
 V_\pi (s) = \mathbb{E}_\pi [G_t|S_t=s]
 \end{align*}
 
+Also know as \textbf{policy evaluation} or the prediction problem.
+\begin{align*}
+V_\pi (s) = \sum_{a\in A} \pi(a|s) \left( R_s^a + \gamma\sum_{s'\in S}P_{ss'}^a V_\pi(s') \right)
+\end{align*}
+
 The \textbf{action-value function} is the expected return starting from state $s$, taking action a, and then following policy $\pi$.
 \begin{align*}
 Q_\pi(s,a) = \mathbb{E}_\pi [G_t |S_t=s,A_t=a]
+\end{align*}
+
+\begin{align*}
+Q_\pi(s,a) = R_s^a + \gamma\sum_{s'\in S}P_{ss'}^a\sum_{a\in A}\pi(a'|s')Q_\pi(s',a')
 \end{align*}
 
 There is always at least one policy that is better than or equal to all other
@@ -161,17 +170,30 @@ Q_*(s,a) &= R_s^a + \gamma\sum_{s'\in S}P_{ss'}^a \mbox{max}_{a'}Q_*(s',a')¨
 
 \section{Planning by Dynamic Programming}
 
-Optimal value function
+\textbf{Bellman expectation equation} using matrices:
+\begin{align*}
+\mathbf{V}_\pi = \mathbf{R}^\pi + \gamma \mathbf{P}^\pi\mathbf{V}_\pi
+\end{align*}
 
-Optimal policy
+Solved directly:
+\begin{align*}
+\mathbf{V}_\pi = (\mathbf{I} - \gamma \mathbf{P}^\pi)^{-1}\mathbf{R}\pi
+\end{align*}
 
-Bellman expectation equation
+\textbf{Iterative policy equation}
+\begin{align*}
+V_{k+1}(s) = \sum_{a\in A}\pi(a|s) \left(R_s^a + \gamma\sum_{s'\in S} P_{ss'}^a V_k(s')\right)
+\end{align*}
 
-Bellman optimality equation
+\begin{align*}
+\mathbf{V}^{k+1} = \mathbf{R}^\pi + \gamma\mathbf{P}^\pi\mathbf{V}^k
+\end{align*}
 
-(iterative) policy equation
+Policy evaluation estimate $V_\pi$. Iterative policy evaluation
 
-Bellman expectation backup $v_1 \rightarrow v_2 \rightarrow v_3 ...$
+Policy improvement generate $\pi' \geq \pi$. Greedy policy improvement.
+
+Bellman expectation backup $V_1 \rightarrow V_2 \rightarrow V_3 ...\rightarrow V_\pi$
 
 Synchronous backup
 
@@ -195,7 +217,7 @@ asynchronous dynamic programming
 
 in-place value iteration
 
-´prioritized sweeping and Bellman error
+prioritized sweeping and Bellman error
 
 real-time dynamic programming
 
