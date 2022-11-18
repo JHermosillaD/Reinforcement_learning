@@ -11,6 +11,7 @@ Restricted to one pedestrian with rectilinear motion.
 Experience buffer composed by the position and speed of 4 observations.
 $Experience = ((p_{1x}, p_{1y}, v_{1x},v_{1y}), (p_{2x}, p_{2y}, v_{2x},v_{2y}), (p_{3x}, p_{3y}, v_{3x},v_{3y}), (p_{4x}, p_{4y}, v_{4x},v_{4y})) $
 
+Execution example:
 <p float="left">
   <img src="environment_simulator_V2/output/experience_buffer.png"/>
 </p>
