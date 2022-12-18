@@ -42,6 +42,14 @@ The end of an episode is defined by the following terminal states:
   * The vehicle invades personal space, i.e. $|\mathbf{P}^h - \mathbf{P}^v| < l^2$
   * The vehicle is moving backwards, i.e. $\dot{p}^h < 0$
 
+Examples of episodes
+<p float="center">
+  <img src="https://github.com/JHermosillaD/Reinforcement_learning/blob/main/environment_simulator_V1/imgs/episode_1.gif" width="330" />
+  <img src="https://github.com/JHermosillaD/Reinforcement_learning/blob/main/environment_simulator_V1/imgs/episode_2.gif" width="330" />
+  <img src="https://github.com/JHermosillaD/Reinforcement_learning/blob/main/environment_simulator_V1/imgs/episode_3.gif" width="330" />
+</p>
+
+
 ## V2 pygame simulation
 
 Restricted to one pedestrian with rectilinear motion.
