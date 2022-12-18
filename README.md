@@ -44,9 +44,9 @@ The end of an episode is defined by the following terminal states:
 
 Examples of episodes
 <p float="center">
-  <img src="https://github.com/JHermosillaD/Reinforcement_learning/blob/main/environment_simulator_V1/imgs/episode_1.gif" width="330" />
-  <img src="https://github.com/JHermosillaD/Reinforcement_learning/blob/main/environment_simulator_V1/imgs/episode_2.gif" width="330" />
-  <img src="https://github.com/JHermosillaD/Reinforcement_learning/blob/main/environment_simulator_V1/imgs/episode_3.gif" width="330" />
+  <img src="https://github.com/JHermosillaD/Reinforcement_learning/blob/main/environment_simulator_V1/imgs/episode_1.gif" width="250" />
+  <img src="https://github.com/JHermosillaD/Reinforcement_learning/blob/main/environment_simulator_V1/imgs/episode_2.gif" width="250" />
+  <img src="https://github.com/JHermosillaD/Reinforcement_learning/blob/main/environment_simulator_V1/imgs/episode_3.gif" width="250" />
 </p>
 
 
